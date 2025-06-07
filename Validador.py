@@ -7,42 +7,37 @@ expressoes = [
     "a+b*(c/d)",       # Válida
 ]
 
-
-
-
-def validar_expressao(expressao str) - bool
+def validar_expressao(expressao: str) -> bool:
     pilha = []
-    operadores = set(+-)
-    operandos = set(abcdefghijklmnopqrstuvwxyz0123456789)
-    ultimo = None  
-    # último tipo de símbolo lido 'op', 'num', '(', ')'
+    operadores = set("+-*/")
+    operandos = set("abcdefghijklmnopqrstuvwxyz0123456789")
+    ultimo = None  # 'op', 'num', '(', ')'
 
-    for i, char in enumerate(expressao)
-        if char == ' '
+    for i, char in enumerate(expressao):
+        if char == ' ':
             continue
-        elif char == '('
+        elif char == '(':
             pilha.append(char)
             ultimo = '('
-        elif char == ')'
-            if not pilha or pilha[-1] != '('
+        elif char == ')':
+            if not pilha or pilha[-1] != '(':
                 return False
             pilha.pop()
-            if ultimo in operadores or ultimo == '('
+            if ultimo in ['op', '(']:
                 return False
             ultimo = ')'
-        elif char in operandos
-            if ultimo in operandos or ultimo == ')'
+        elif char in operandos:
+            if ultimo in ['num', ')']:
                 return False
             ultimo = 'num'
-        elif char in operadores
-            if ultimo not in ['num', ')']
+        elif char in operadores:
+            if ultimo not in ['num', ')']:
                 return False
             ultimo = 'op'
-        else
+        else:
             return False  # símbolo inválido
 
-    return len(pilha) == 0 and ultimo not in operadores and ultimo is not None
-
+    return len(pilha) == 0 and ultimo not in ['op', None]
 
 for exp in expressoes:
     print(f"{exp}: {'Válida' if validar_expressao(exp) else 'Inválida'}")
